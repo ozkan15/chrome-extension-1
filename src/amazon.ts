@@ -2,7 +2,11 @@ let getCurrentPage = () => {
     if (document.getElementById("placeYourOrder"))
         return "PLACE_ORDER";
 
-    if (document.getElementById("add-to-cart-button") || document.getElementById("one-click-button") || document.getElementById("buy-now-button"))
+    if (document.querySelector("form[action*='/hz/audible/checkout'] input[name*='AddCreditCardEvent']"))
+        return "ADD_CREDIT_CARD";
+
+    if (document.getElementById("add-to-cart-button") || document.getElementById("one-click-button") || document.getElementById("buy-now-button")
+        || document.querySelector("form[action*='/hz/audible/checkout']"))
         return "PRODUCT_PAGE";
 
     if (document.querySelector('div[data-component-type="s-search-result"]'))
@@ -14,7 +18,7 @@ let getCurrentPage = () => {
     if (document.getElementById("authportal-center-section"))
         return "LOGIN_REQUESTED";
 
-    if (document.querySelector("img[src*='checkout']"))
+    if (document.querySelector("img[src*='checkout']") || document.getElementById("checkoutOrderSummaryDesktopBox"))
         return "CHECKOUT";
 }
 
@@ -42,6 +46,12 @@ let getCurrentPage = () => {
                 let butNowButton = document.querySelector("#buy-now-button") as HTMLElement;
                 if (butNowButton) {
                     butNowButton.click();
+                    break;
+                }
+
+                let continueForFreeButton = document.querySelector("form[action*='/hz/audible/checkout'] input[type='submit']") as HTMLElement;
+                if (continueForFreeButton) {
+                    continueForFreeButton.click();
                 }
 
                 break;
@@ -53,6 +63,9 @@ let getCurrentPage = () => {
             case "LOGIN_REQUESTED":
             case "CHECKOUT":
                 chrome.runtime.sendMessage({ type: "ITEM_ADDED" });
+                break;
+            case "ADD_CREDIT_CARD":
+                chrome.runtime.sendMessage({ type: "CHOOSE_PAYMENT", message: "https://www.amazon.com/gp/buy/payselect/handlers/display.html" });
                 break;
             default:
                 throw new Error("page not found");
