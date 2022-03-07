@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "name": "Matterway Tech Challenge",
+    "description": "This extension will fetch a book in the specified genre",
+    "version": "1.0",
+    "browser_action": {
+        "default_icon": "icon48.png",
+        "default_popup": "index.html"
+    },
+    "icons": {
+        "48": "icon48.png"
+    },
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "storage",
+        "scripting",
+        "https://www.goodreads.com/choiceawards/best-books-2020",
+        "https://www.amazon.com/*"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    }
+}
