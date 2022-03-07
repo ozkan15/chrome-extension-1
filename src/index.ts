@@ -16,7 +16,7 @@ interface BrowserMessage {
 function init() {
   chrome.runtime.onMessage.addListener((message, sender) => {
     if ((message as BrowserMessage).type === 'ERROR_OCCURED') {
-      //chrome.windows.remove(sender.tab.windowId);
+      chrome.windows.remove(sender.tab.windowId);
       showError("Error while processing order");
       console.log((message as BrowserMessage).message);
     }
